@@ -27,3 +27,22 @@ class Grid:
         for i in self.space:
             print(i)
         return None
+    
+    def decrease(self,x,y):
+        '''
+        As per the game's definition, decrease a value on the grid by 1
+        x & y - values from 1 to the coordinate maximum
+        '''
+        print('Decreasing (%s,%s):'%(x,y))
+        self.space[x-1][y-1]=max(self.space[x-1][y-1]-1,0)
+        return self.print_grid()
+
+    def height(self):
+        '''
+        Calculates the sum of all elements in a matrix
+        '''
+        s=0
+        for i in self.space:
+            for j in i:
+                s+=j
+        return s
