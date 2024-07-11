@@ -33,7 +33,7 @@ class Grid:
         As per the game's definition, decrease a value on the grid by 1
         x & y - values from 1 to the coordinate maximum
         '''
-        print('Decreasing (%s,%s):'%(x,y))
+        #print('Decreasing (%s,%s):'%(x,y))
         self.space[x-1][y-1]=max(self.space[x-1][y-1]-1,0)
         return self.print_grid()
 
