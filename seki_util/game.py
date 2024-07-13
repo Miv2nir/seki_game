@@ -1,10 +1,11 @@
 import random
 
 class Grid:
-    def __init__(self,x,y):
+    def __init__(self,x,y,draw_allowed=False):
         self.x=x
         self.y=y
         self.space = [[0 for col in range(x)] for row in range(y)]
+        self.draw_allowed=draw_allowed #d-seki mode
     
     def set_space(self,m):
         '''
@@ -21,7 +22,7 @@ class Grid:
         for i in range(self.y):
             for j in range(self.x):
                 self.space[i][j]=random.randint(low,high)
-            print(i)
+            #print(i)
     
     def print_grid(self):
         for i in self.space:
@@ -34,7 +35,7 @@ class Grid:
         x & y - values from 1 to the coordinate maximum
         '''
         #print('Decreasing (%s,%s):'%(x,y))
-        self.space[x-1][y-1]=max(self.space[x-1][y-1]-1,0)
+        self.space[y-1][x-1]=max(self.space[y-1][x-1]-1,0)
         return self.print_grid()
 
     def height(self):
