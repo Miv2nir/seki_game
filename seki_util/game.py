@@ -47,3 +47,39 @@ class Grid:
             for j in i:
                 s+=j
         return s
+
+    def evaluate(self):
+        '''
+        Check the condition of the field to see if anybody won
+        '''
+        bob_wins=False
+        alice_wins=False
+        draw_possible=self.draw_allowed
+        #bob wins if a row is empty
+        for i in self.space:
+            if i==([0]*self.x):
+                bob_wins=True
+                #if not draw_possible: #no draw means there's no point in continuing to search for the win condition, bob won
+                #    print('Bob wins')
+                #    return True
+        #alice wins if a column is empty
+        for i in range(self.x):
+            check=True #assume the column is full of zeroes
+            for j in range(self.y):
+                if self.space[j][i]!=0:
+                    check=False #sike
+                    break
+            if check:
+                alice_wins=True
+        if draw_possible and alice_wins and bob_wins:
+            print('Draw!')
+            return True
+        elif bob_wins:
+            print('Bob wins!')
+            return True
+        elif alice_wins:
+            print('Alice wins!')
+            return True
+        else:
+            print('nobody won')
+            return False
