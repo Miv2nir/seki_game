@@ -28,6 +28,13 @@ def game_3(bob,alice): #bob wins
     bob.move(g,3,1)
     alice.move(g,4,1)
 
+def game_4(bob,alice): #draw test
+    g=game.Grid(2,2)
+    g.draw_allowed=True
+    g.populate(0,0)
+    g.print_grid()
+    bob.move(g,1,1)
+
 #main function starts here
 def main():
     random.seed(10)
@@ -37,7 +44,7 @@ def main():
     alice=players.Player(players.Names.ALICE)
 
     #generate the game object and the grid here
-    game_3(bob,alice)
+    game_4(bob,alice)
 
 
 if __name__ == '__main__':
