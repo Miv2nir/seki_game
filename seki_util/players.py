@@ -1,4 +1,4 @@
-from seki_util import game
+from seki_util import game, alg
 from enum import IntEnum
 
 class Names(IntEnum):
@@ -15,3 +15,10 @@ class Player:
         game_obj.decrease(x,y)
         game_obj.evaluate()
         return game_obj
+    
+    def analyze(self,game_obj:game.Grid):
+        '''
+        Suggests the next most beneficial move to the player.
+        According to the design this function should only be called when the player is Alice AKA a bot.
+        '''
+        return alg.alg_1(game_obj)
