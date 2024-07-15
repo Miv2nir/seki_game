@@ -13,8 +13,8 @@ class Player:
     def move(self,game_obj:game.Grid,x,y):
         print(self.name.name,'decreases (%s,%s)'%(x,y))
         game_obj.decrease(x,y)
-        game_obj.evaluate()
-        return game_obj
+        thought=game_obj.evaluate()
+        return thought
     
     def analyze(self,game_obj:game.Grid,move=True):
         '''
@@ -23,4 +23,7 @@ class Player:
         '''
         guess_x,guess_y = alg.alg_random(game_obj)
         if move:
-            self.move(game_obj,guess_x,guess_y)
+            thought=self.move(game_obj,guess_x,guess_y)
+        else:
+            thought=False
+        return thought
