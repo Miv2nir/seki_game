@@ -7,7 +7,7 @@ def game_1(bob,alice): #test game
     desired_grid=[[2,2,0],[2,0,2],[0,2,2]]
     g=game.Grid(3,3)
     #g.populate(0,10)
-    g.set_space(desired_grid)
+    g.set_grid(desired_grid)
     g.print_grid()
     bob.move(g,1,1)
     alice.move(g,1,1)
@@ -35,6 +35,15 @@ def game_4(bob,alice): #draw test
     g.print_grid()
     bob.move(g,1,1)
 
+def game_5(bob,alice): #alg test
+    desired_grid=[[1,2,3],[4,5,6],[7,8,9]]
+    g=game.Grid(3,3)
+    #g.populate(0,10)
+    g.set_grid(desired_grid)
+    g.print_grid()
+    #bob.move(g,1,1)
+    #alice.analyze(g)
+
 #main function starts here
 def main():
     random.seed(10)
@@ -44,7 +53,7 @@ def main():
     alice=players.Player(players.Names.ALICE)
 
     #generate the game object and the grid here
-    game_4(bob,alice)
+    game_5(bob,alice)
 
 
 if __name__ == '__main__':

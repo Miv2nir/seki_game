@@ -21,4 +21,4 @@ class Player:
         Suggests the next most beneficial move to the player.
         According to the design this function should only be called when the player is Alice AKA a bot.
         '''
-        return alg.alg_1(game_obj)
+        return alg.alg_random(game_obj)

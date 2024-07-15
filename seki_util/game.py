@@ -2,16 +2,16 @@ import random
 
 class Grid:
     def __init__(self,x,y,draw_allowed=False):
-        self.x=x
-        self.y=y
-        self.space = [[0 for col in range(x)] for row in range(y)]
+        self._x=x
+        self._y=y
+        self._grid = [[0 for col in range(x)] for row in range(y)]
         self.draw_allowed=draw_allowed #d-seki mode
     
-    def set_space(self,m):
+    def set_grid(self,m):
         '''
         m is assumed to be a list of lists
         '''
-        self.space=m
+        self._grid=m
     def populate(self,low,high):
         '''
         Populates the matrix with random values >=0
@@ -19,13 +19,13 @@ class Grid:
         high - max value
         '''
         low=max(0,low)
-        for i in range(self.y):
-            for j in range(self.x):
-                self.space[i][j]=random.randint(low,high)
+        for i in range(self._y):
+            for j in range(self._x):
+                self._grid[i][j]=random.randint(low,high)
             #print(i)
     
     def print_grid(self):
-        for i in self.space:
+        for i in self._grid:
             print(i)
         return None
     
@@ -35,15 +35,23 @@ class Grid:
         x & y - values from 1 to the coordinate maximum
         '''
         #print('Decreasing (%s,%s):'%(x,y))
-        self.space[y-1][x-1]=max(self.space[y-1][x-1]-1,0)
+        self._grid[y-1][x-1]=max(self._grid[y-1][x-1]-1,0)
         return self.print_grid()
+    
+    def get_value(self,x,y):
+        '''Returns a value on an (x,y) coordinate'''
+        return self._grid[y-1][x-1]
+
+    def get_grid(self):
+        '''Returns the grid'''
+        return self._grid
 
     def height(self):
         '''
         Calculates the sum of all elements in a matrix
         '''
         s=0
-        for i in self.space:
+        for i in self._grid:
             for j in i:
                 s+=j
         return s
@@ -56,17 +64,17 @@ class Grid:
         alice_wins=False
         draw_possible=self.draw_allowed
         #bob wins if a row is empty
-        for i in self.space:
-            if i==([0]*self.x):
+        for i in self._grid:
+            if i==([0]*self._x):
                 bob_wins=True
                 #if not draw_possible: #no draw means there's no point in continuing to search for the win condition, bob won
                 #    print('Bob wins')
                 #    return True
         #alice wins if a column is empty
-        for i in range(self.x):
+        for i in range(self._x):
             check=True #assume the column is full of zeroes
-            for j in range(self.y):
-                if self.space[j][i]!=0:
+            for j in range(self._y):
+                if self._grid[j][i]!=0:
                     check=False #sike
                     break
             if check:
