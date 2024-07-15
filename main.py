@@ -37,8 +37,11 @@ def runtime(bob,alice,presets):
         
     elif option1==2: #generating a map
         x,y=map(int,input("Enter desired dimensions of a grid: ").split())
-        print('Generating a grid of %s by %s:3'%(x,y))
+        print('Generating a grid of %s by %s...'%(x,y))
         g=game.Grid(x,y)
+        #populate with random values
+        low,high=map(int,input("Enter desired range of random variables: ").split())
+        g.populate(low,high)
     g.print_grid()
 
 #main function starts here
