@@ -1,7 +1,14 @@
 import random
 from seki_util import game,players,archive
 
-def option_picker(options:set):
+def option_picker_str(options:set):
+    while True: #option selector
+        option=str(input("Type an option: "))
+        if option in options:
+            return option
+        print('Incorrect option specified.')
+
+def option_picker_int(options:set):
     while True: #option selector
         option=int(input("Pick an option: "))
         if option in options:
@@ -9,31 +16,30 @@ def option_picker(options:set):
         print('Incorrect option number specified.')
 
 
-def runtime(bob,alice):
+def runtime(bob,alice,presets):
     '''runtime for the CLI play'''
     print('Select an option:')
     print('1. Load a field preset')
     print('2. Define and randomly generate the game field')
-    option1=option_picker({1,2})
+    option1=option_picker_int({1,2})
     
+    g=game.Grid()
     if option1==1: #picking a preset map
         print('Type the name of a desired preset.')
         print('Available presets are:')
         for i in presets:
-            print("%s ->"% i)
-            g_temp=game.Grid().set_grid(presets[i])
+            print("%s:"% i)
+            g_temp=game.Grid()
+            g_temp.set_grid(presets[i])
             g_temp.print_grid()
+        g.set_grid(presets[option_picker_str(presets.keys())])
         
-
-
         
-
-
     elif option1==2: #generating a map
         x,y=map(int,input("Enter desired dimensions of a grid: ").split())
         print('Generating a grid of %s by %s:3'%(x,y))
         g=game.Grid(x,y)
-        g.print_grid()
+    g.print_grid()
 
 #main function starts here
 def main():
@@ -49,11 +55,7 @@ def main():
     alice=players.Player(players.Names.ALICE)
 
     #runtime for the CLI play
-    g=game.Grid()
-    g.set_grid(presets['cascade'])
-    g.print_grid()
-    print(g._x,g._y)
-    
+    runtime(bob,alice,presets)
 
 
 if __name__ == '__main__':
