@@ -41,8 +41,13 @@ def game_5(bob,alice): #alg test
     #g.populate(0,10)
     g.set_grid(desired_grid)
     g.print_grid()
-    #bob.move(g,1,1)
-    #alice.analyze(g)
+    bob.move(g,1,1)
+    alice.analyze(g)
+    bob.move(g,2,1)
+    alice.analyze(g)
+    bob.move(g,2,1)
+    alice.analyze(g)
+    bob.move(g,3,1)
 
 #main function starts here
 def main():

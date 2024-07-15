@@ -16,9 +16,11 @@ class Player:
         game_obj.evaluate()
         return game_obj
     
-    def analyze(self,game_obj:game.Grid):
+    def analyze(self,game_obj:game.Grid,move=True):
         '''
         Suggests the next most beneficial move to the player.
         According to the design this function should only be called when the player is Alice AKA a bot.
         '''
-        return alg.alg_random(game_obj)
+        guess_x,guess_y = alg.alg_random(game_obj)
+        if move:
+            self.move(game_obj,guess_x,guess_y)
