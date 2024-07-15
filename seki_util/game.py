@@ -1,7 +1,7 @@
 import random
 
 class Grid:
-    def __init__(self,x,y,draw_allowed=False):
+    def __init__(self,x=1,y=1,draw_allowed=False):
         self._x=x
         self._y=y
         self._grid = [[0 for col in range(x)] for row in range(y)]
@@ -13,6 +13,9 @@ class Grid:
         '''
         self._grid=m
         #TODO: Set appropriate coordinates to follow-up
+        #calculating new dimensions
+        self._x=len(m[0])
+        self._y=len(m)
     def populate(self,low,high):
         '''
         Populates the matrix with random values >=0

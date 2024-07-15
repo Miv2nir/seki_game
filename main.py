@@ -41,7 +41,7 @@ def main():
     random.seed(10)
     #predefined presets for convenience
     presets={
-        'cascade':[[1,2,3],[4,5,6],[7,8,9]],
+        'cascade':[[1,2,3],[4,5,6],[7,8,9],[10,11,12]],
         'doc':[[2,2,0],[2,0,2],[0,2,2]]
     }
     #init players
@@ -49,8 +49,10 @@ def main():
     alice=players.Player(players.Names.ALICE)
 
     #runtime for the CLI play
-    g=game.Grid(3,4)
+    g=game.Grid()
+    g.set_grid(presets['cascade'])
     g.print_grid()
+    print(g._x,g._y)
     
 
 
