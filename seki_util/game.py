@@ -12,6 +12,7 @@ class Grid:
         m is assumed to be a list of lists
         '''
         self._grid=m
+        #TODO: Set appropriate coordinates to follow-up
     def populate(self,low,high):
         '''
         Populates the matrix with random values >=0
