@@ -44,6 +44,25 @@ def runtime(bob,alice,presets):
         g.populate(low,high)
     g.print_grid()
 
+    #time to play
+    game_over=False
+    while not game_over:
+        #bob starts first
+        bob_x,bob_y=map(int,input('Select a space to reduce a number in: ').split())
+        #check for out of bounds selection
+        if (bob_x>g._x) or (bob_y>g._y) or (0>bob_x) or (0>bob_y):
+            print(g._x,g._y)
+            print('Selection is Out of Bounds!')
+            continue
+        #check for selecting a zero
+        if g.get_value(bob_x,bob_y)==0:
+            print('Cannot select a Zero!')
+            continue
+        #continuing on
+        bob.move(g,bob_x,bob_y)
+        game_over=alice.analyze(g,move=True)
+
+
 #main function starts here
 def main():
 
