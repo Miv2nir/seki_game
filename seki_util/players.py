@@ -21,7 +21,7 @@ class Player:
         Suggests the next most beneficial move to the player.
         According to the design this function should only be called when the player is Alice AKA a bot.
         '''
-        guess_x,guess_y = alg.alg_random(game_obj)
+        guess_x,guess_y = alg.alg_naive(game_obj)
         if move:
             thought=self.move(game_obj,guess_x,guess_y)
         else:

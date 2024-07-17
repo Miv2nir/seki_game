@@ -15,3 +15,38 @@ def alg_random(game_obj:game.Grid):
         #print(game_obj.get_value(guess_x,guess_y))
         if game_obj.get_value(guess_x,guess_y)!=0:
             return (guess_x,guess_y)
+
+def alg_naive(game_obj:game.Grid):
+    '''An algorithm which scans the field and simply goes to try to find the easiest column to reduce to a zero one'''
+
+    #1. Calculate the weight of each column
+    #2. Select the smallest one
+    #3. Reduce the smallest variable there
+    d=dict()
+    for i in range(game_obj._x):
+        sum_col=0
+        for j in range(game_obj._y):
+            sum_col+=game_obj.get_grid()[j][i]
+        d[i]=sum_col
+    #print(d)
+    lowest_val=float('inf')
+    lowest_key=-1
+    for i in d.keys():
+        if d[i]<lowest_val:
+            lowest_val=min(lowest_val,d[i])
+            lowest_key=i
+    
+    #print(lowest_key)
+
+    smallest_value=float('inf')
+    x=0
+    y=0
+    for i in range(game_obj._y):
+        if game_obj.get_grid()[i][lowest_key]<smallest_value and game_obj.get_grid()[i][lowest_key]!=0:
+            smallest_value=game_obj.get_grid()[i][lowest_key]
+            #print(smallest_value,x,y)
+            x=lowest_key+1
+            y=i+1
+    return (x,y)
+    
+
