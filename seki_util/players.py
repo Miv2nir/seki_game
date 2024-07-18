@@ -1,9 +1,5 @@
 from seki_util import game, alg
-from enum import IntEnum
-
-class Names(IntEnum):
-    BOB=0 #player
-    ALICE=1 #bot
+from seki_util.names import Names
 
 class Player:
     def __init__(self,name:Names):

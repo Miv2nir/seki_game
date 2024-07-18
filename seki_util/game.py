@@ -1,5 +1,5 @@
 import random
-
+from seki_util.names import Names
 class Grid:
     def __init__(self,x=1,y=1,draw_allowed=False):
         self._x=x
@@ -88,10 +88,10 @@ class Grid:
             return True
         elif bob_wins:
             print('Bob wins!')
-            return True
+            return Names.BOB
         elif alice_wins:
             print('Alice wins!')
-            return True
+            return Names.ALICE
         else:
             print('nobody won')
             return False

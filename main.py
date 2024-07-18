@@ -1,5 +1,6 @@
 import random
 from seki_util import game,players,archive
+from seki_util.names import Names
 
 def option_picker_str(options:set):
     while True: #option selector
@@ -77,7 +78,8 @@ def main():
     alice=players.Player(players.Names.ALICE)
 
     #runtime for the CLI play
-    runtime(bob,alice,presets)
+    #runtime(bob,alice,presets)
+    print(Names.BOB==True)
 
 
 if __name__ == '__main__':

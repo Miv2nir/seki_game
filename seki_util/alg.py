@@ -1,4 +1,5 @@
 from seki_util import game
+from seki_util.names import Names
 import random
 
 def alg_random(game_obj:game.Grid):
@@ -49,8 +50,31 @@ def alg_naive(game_obj:game.Grid):
             y=i+1
     return (x,y)
     
+def if_terminal(game_obj:game.Grid):
+    '''Check if anybody won in this case (wrapper for game_obj.evaluate())
+    If true, proceed to terminal_calc, if not then return False'''
+    if game_obj.evaluate() in [Names.ALICE,Names.BOB] or game_obj.evaluate()==True:
+        return True
+    return False
+
+def terminal_calc(game_obj:game.Grid):
+    '''Wrapper for game_obj.evaulate() that returns the following values:
+    1 - Alice won (evaluate() returns ALICE) 
+    0 - Draw (only possible with a corresponding mode turned on, evaulate() returns True)
+    -1 - Bob won (evaluate() returns BOB)'''
+    thought=game_obj.evaluate()
+    if thought==Names.ALICE:
+        return 1
+    elif thought==Names.BOB:
+        return -1
+    else: #must be a draw, the function here shouldn't be called if the state isn't a terminal one
+        return 0
+    
+
+
 def alg_minimax(game_obj:game.Grid):
     '''Implementing a minimax algorithm here with a condition that whenever this function is called, Alice is the current player (aka the MAX player) and Bob is always a MIN player.
     '''
-    return None
+    #first up we need a way to evaluate whether the game is over or not and who won
+
 
