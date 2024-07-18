@@ -49,4 +49,8 @@ def alg_naive(game_obj:game.Grid):
             y=i+1
     return (x,y)
     
+def alg_minimax(game_obj:game.Grid):
+    '''Implementing a minimax algorithm here with a condition that whenever this function is called, Alice is the current player (aka the MAX player) and Bob is always a MIN player.
+    '''
+    return None
 
