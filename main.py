@@ -78,7 +78,7 @@ def main():
     alice=players.Player(players.Names.ALICE)
 
     #runtime for the CLI play
-    #runtime(bob,alice,presets)
+    runtime(bob,alice,presets)
     
     #archive.copy_test(bob,alice)
 
