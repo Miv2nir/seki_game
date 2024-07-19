@@ -1,6 +1,7 @@
 from seki_util import game
 from seki_util.names import Names
-import random
+import random,copy
+from math import inf
 
 def alg_random(game_obj:game.Grid):
     '''An implementation of random moves in order to get a grasp of the board reading and handling (subject to the global random seed)'''
@@ -58,7 +59,8 @@ def if_terminal(game_obj:game.Grid):
     return False
 
 def terminal_calc(game_obj:game.Grid):
-    '''Wrapper for game_obj.evaulate() that returns the following values:
+    '''Wrapper for game_obj.evaulate() that should only be called if if_terminal returns True
+    Returns the following values:
     1 - Alice won (evaluate() returns ALICE) 
     0 - Draw (only possible with a corresponding mode turned on, evaulate() returns True)
     -1 - Bob won (evaluate() returns BOB)'''
@@ -70,11 +72,42 @@ def terminal_calc(game_obj:game.Grid):
     else: #must be a draw, the function here shouldn't be called if the state isn't a terminal one
         return 0
     
-
-
-def alg_minimax(game_obj:game.Grid):
+def minimax(game_obj:game.Grid,depth=inf,alice=True):
     '''Implementing a minimax algorithm here with a condition that whenever this function is called, Alice is the current player (aka the MAX player) and Bob is always a MIN player.
     '''
     #first up we need a way to evaluate whether the game is over or not and who won
+    if depth==0 or if_terminal(game_obj):
+        return terminal_calc(game_obj)
+    
+    #alice is always the maximizing player
+    if alice:
+        maxEval= -inf
+        #call this function for each valid position in the field
+        for i in range(game_obj._x):
+            for j in range(game_obj._y):
+                #copy the matrix
+                future_game_obj=copy.deepcopy()
+                #apply a possible move to the next step of this procedure
+                future_game_obj.decrease(i+1,j+1)
+                #recursive calls
+                eval=minimax(future_game_obj,depth-1,false)
+                maxEval=max(eval,maxEval)
+            return maxEval
+    else: #evaulating bob
+        minEval=inf
+        for i in range(game_obj._x):
+            for j in range(game_obj._y):
+                future_game_obj=copy.deepcopy()
+                future_game_obj.decrease(i+1,j+1)
+                eval=minimax(future_game_obj,depth-1,true)
+                minEval=min(eval,maxEval)
+            return minEval
+
+
+
+def alg_minimax(game_obj:game.Grid):
+    '''minimax function wrapper for further integration into the code + iterative deepening work'''
+    return minimax(game_obj.get_grid,3)
+    
 
 

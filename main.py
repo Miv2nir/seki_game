@@ -79,7 +79,10 @@ def main():
 
     #runtime for the CLI play
     #runtime(bob,alice,presets)
-    print(Names.BOB==True)
+    
+    #archive.copy_test(bob,alice)
+
+
 
 
 if __name__ == '__main__':

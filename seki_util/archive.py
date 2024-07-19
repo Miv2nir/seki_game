@@ -1,4 +1,5 @@
 from seki_util import game,players
+import copy
 #this module is only used to store 'test' functions that i ran before while testing the algoritms and everything
 
 def game_1(bob,alice): #test game
@@ -46,3 +47,13 @@ def game_5(bob,alice): #alg test
     bob.move(g,2,1)
     alice.analyze(g)
     bob.move(g,3,1)
+
+def copy_test(bob,alice):
+    g1=game.Grid(3,3)
+    desired_grid=[[2,2,0],[2,0,2],[0,2,2]]
+    g1.set_grid(desired_grid)
+    g2=copy.deepcopy(g1)
+    g1.decrease(1,1)
+    g2.decrease(2,1)
+    #g1.print_grid()
+    #g2.print_grid()
