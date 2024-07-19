@@ -77,31 +77,40 @@ def terminal_calc(game_obj:game.Grid):
 def minimax(game_obj:game.Grid,x,y,depth=inf,alice=True):
     '''Implementing a minimax algorithm here with a condition that whenever this function is called, Alice is the current player (aka the MAX player) and Bob is always a MIN player.
     '''
-    #moved from loops: decrease operation of a player
-    #copy the matrix
-    future_game_obj=copy.deepcopy()
-    #apply a possible move to the next step of this procedure
-    future_game_obj.decrease(x,y)
     #first up we need a way to evaluate whether the game is over or not and who won
     if depth==0:
         return 0 #TODO: implement a proper heuristics calculation here
-    if if_terminal(future_game_obj): #we're getting our win/lose condition evaluation here
-        return terminal_calc(future_game_obj)
+    if if_terminal(game_obj): #we're getting our win/lose condition evaluation here
+        return terminal_calc(game_obj)
+    
+
     
     #alice is always the maximizing player
     if alice:
         maxEval= -inf
         #call this function for each valid position in the field
-        for i in range(future_game_obj._x):
-            for j in range(future_game_obj._y):
+        for i in range(game_obj._x):
+            for j in range(game_obj._y):
+                #copy the matrix
+                future_game_obj=copy.deepcopy()
+                #apply a possible move to the next step of this procedure
+                if future_game_obj.get_value(i+1,j+1)==0:
+                    #cannot do anything here
+                    continue
+                future_game_obj.decrease(i+1,j+1)
                 #recursive calls
                 eval=minimax(future_game_obj,i+1,j+1,depth-1,false)
                 maxEval=max(eval,maxEval)
             return maxEval
     else: #evaulating bob
         minEval=inf
-        for i in range(future_game_obj._x):
-            for j in range(future_game_obj._y):
+        for i in range(game_obj._x):
+            for j in range(game_obj._y):
+                future_game_obj=copy.deepcopy()
+                if future_game_obj.get_value(i+1,j+1)==0:
+                    #cannot do anything here
+                    continue
+                future_game_obj.decrease(i+1,j+1)
                 eval=minimax(future_game_obj,i+1,j+1,depth-1,true)
                 minEval=min(eval,maxEval)
             return minEval
@@ -110,10 +119,27 @@ def minimax(game_obj:game.Grid,x,y,depth=inf,alice=True):
 
 def alg_minimax(game_obj:game.Grid):
     '''minimax function wrapper for further integration into the code + iterative deepening work'''
-    aeiou=minimax(game_obj)
-    print(aeiou)
-    return aeiou
+    d=dict()
+    #iterate through the entire game field, calculate minimax values for each position, return the highest one possible
+    for i in range(game_obj._x):
+        for j in range(game_obj._y):
+            future_game_obj=copy.deepcopy(game_obj)
+            if future_game_obj.get_value(i+1,j+1)==0:
+                #cannot do anything here
+                continue
+            future_game_obj.decrease(i+1,j+1)
+            d[(i+1,j+1)]=minimax(game_obj,i+1,j+1,alice=False)
+    #pick the highest value coordinate
+    print(d)
+    max_val=-inf
+    final_x=0
+    final_y=0
+    for i in d.keys():
+        if d[i]>max_val:
+            max_val=d[i]
+            final_x,final_y=i
     #depth not supported yet
+    return (final_x,final_y)
     
 
 
