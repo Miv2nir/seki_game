@@ -88,10 +88,10 @@ class Grid:
             return True
         elif bob_wins:
             print('Bob wins!')
-            return Names.BOB
+            return Names.BOB.name
         elif alice_wins:
             print('Alice wins!')
-            return Names.ALICE
+            return Names.ALICE.name
         else:
             print('nobody won')
             return False
