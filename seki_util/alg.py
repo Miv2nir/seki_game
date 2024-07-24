@@ -70,6 +70,7 @@ def terminal_calc(game_obj:game.Grid):
     thought=game_obj.evaluate()
     print('thought:',thought)
     if thought==Names.ALICE.name:
+        print('alice test')
         return 1
     elif thought==Names.BOB.name:
         return -1
@@ -83,11 +84,9 @@ def minimax(game_obj:game.Grid,x,y,depth=inf,alice=True):
     if depth==0:
         return 0 #TODO: implement a proper heuristics calculation here
     if if_terminal(game_obj): #we're getting our win/lose condition evaluation here
-        print('This state is terminal lol')
+        print('This state is terminal lol',x,y)
         return terminal_calc(game_obj)
-    
 
-    
     #alice is always the maximizing player
     if alice:
         maxEval= -inf
@@ -126,14 +125,15 @@ def alg_minimax(game_obj:game.Grid):
     #iterate through the entire game field, calculate minimax values for each position, return the highest one possible
     for i in range(game_obj._x):
         for j in range(game_obj._y):
+            print('iteration',i,j)
             future_game_obj=copy.deepcopy(game_obj)
             if future_game_obj.get_value(i+1,j+1)==0:
                 #cannot do anything here
                 continue
             future_game_obj.decrease(i+1,j+1)
-            d[(i+1,j+1)]=minimax(game_obj,i+1,j+1,alice=False)
+            d[(i+1,j+1)]=minimax(future_game_obj,i+1,j+1,alice=False)
+            print(d)
     #pick the highest value coordinate
-    print(d)
     max_val=-inf
     final_x=0
     final_y=0
