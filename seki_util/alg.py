@@ -77,7 +77,7 @@ def terminal_calc(game_obj:game.Grid):
     else: #must be a draw, the function here shouldn't be called if the state isn't a terminal one
         return 0
     
-def minimax(game_obj:game.Grid,x,y,depth=inf,alice=True):
+def minimax(game_obj:game.Grid,x,y,alpha=-inf,beta=inf,depth=inf,alice=True):
     '''Implementing a minimax algorithm here with a condition that whenever this function is called, Alice is the current player (aka the MAX player) and Bob is always a MIN player.
     '''
     #first up we need a way to evaluate whether the game is over or not and who won
@@ -92,6 +92,7 @@ def minimax(game_obj:game.Grid,x,y,depth=inf,alice=True):
         maxEval= -inf
         #call this function for each valid position in the field
         for i in range(game_obj._x):
+            break_flag=False
             for j in range(game_obj._y):
                 #copy the matrix
                 future_game_obj=copy.deepcopy(game_obj)
@@ -101,20 +102,33 @@ def minimax(game_obj:game.Grid,x,y,depth=inf,alice=True):
                     continue
                 future_game_obj.decrease(i+1,j+1)
                 #recursive calls
-                eval=minimax(future_game_obj,i+1,j+1,depth-1,False)
+                eval=minimax(future_game_obj,i+1,j+1,alpha,beta,depth-1,False)
                 maxEval=max(eval,maxEval)
+                alpha=max(alpha,eval)
+                if beta <= alpha:
+                    break_flag=True
+                    break
+            if break_flag:
+                break
         return maxEval
     else: #evaulating bob
         minEval=inf
         for i in range(game_obj._x):
+            break_flag=False
             for j in range(game_obj._y):
                 future_game_obj=copy.deepcopy(game_obj)
                 if future_game_obj.get_value(i+1,j+1)==0:
                     #cannot do anything here
                     continue
                 future_game_obj.decrease(i+1,j+1)
-                eval=minimax(future_game_obj,i+1,j+1,depth-1,True)
+                eval=minimax(future_game_obj,i+1,j+1,alpha,beta,depth-1,True)
                 minEval=min(eval,minEval)
+                beta=min(beta,eval)
+                if beta<=alpha:
+                    break_flag=True
+                    break
+            if break_flag:
+                break
         return minEval
 
 
