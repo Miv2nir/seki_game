@@ -40,7 +40,7 @@ class Grid:
         '''
         #print('Decreasing (%s,%s):'%(x,y))
         self._grid[y-1][x-1]=max(self._grid[y-1][x-1]-1,0)
-        return self.print_grid()
+        return self
     
     def get_value(self,x,y):
         '''Returns a value on an (x,y) coordinate'''
@@ -60,7 +60,7 @@ class Grid:
                 s+=j
         return s
 
-    def evaluate(self):
+    def evaluate(self,verbal=False):
         '''
         Check the condition of the field to see if anybody won
         '''
@@ -84,14 +84,18 @@ class Grid:
             if check:
                 alice_wins=True
         if draw_possible and alice_wins and bob_wins:
-            print('Draw!')
+            if verbal:
+                print('Draw!')
             return True
         elif bob_wins:
-            print('Bob wins!')
+            if verbal:
+                print('Bob wins!')
             return Names.BOB.name
         elif alice_wins:
-            print('Alice wins!')
+            if verbal:
+                print('Alice wins!')
             return Names.ALICE.name
         else:
-            print('nobody won')
+            if verbal:
+                print('nobody won')
             return False

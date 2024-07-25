@@ -60,8 +60,10 @@ def runtime(bob,alice,presets):
             print('Cannot select a Zero!')
             continue
         #continuing on
-        bob.move(g,bob_x,bob_y)
-        game_over=alice.analyze(g,move=True)
+        bob.move(g,bob_x,bob_y,verbal=True)
+        g.print_grid()
+        game_over=alice.analyze(g,move=True,verbal=True)
+        
 
 
 #main function starts here
@@ -71,7 +73,8 @@ def main():
     #predefined presets for convenience
     presets={
         'cascade':[[1,2,3],[4,5,6],[7,8,9],[10,11,12]],
-        'doc':[[2,2,0],[2,0,2],[0,2,2]]
+        'doc':[[2,2,0],[2,0,2],[0,2,2]],
+        'even':[[1,1,1],[1,1,1],[1,1,1]]
     }
     #init players
     bob=players.Player(players.Names.BOB)
