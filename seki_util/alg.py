@@ -77,15 +77,45 @@ def terminal_calc(game_obj:game.Grid):
     else: #must be a draw, the function here shouldn't be called if the state isn't a terminal one
         return 0
     
+def cut_off_evaluation(game_obj:game.Grid):
+    '''This function should evaluate the current position of a field and return a score from -1 to 1 on how beneficial that position is'''
+    #idea: calculate a distance of both bob and alice towards their victories as of right now
+    #equal distances = 0
+    #advantageous positions should be on a scale 
+
+    #assuming the game state is not terminal here
+    
+    #1. Calculate the number of moves till victory for Alice
+    min_alice=inf
+    for i in range(game_obj._x):
+        calc=0
+        for j in range(game_obj._y):
+            if game_obj._grid[j][i]!=0:
+                calc+=game_obj._grid[j][i]
+        min_alice=min(calc,min_alice)
+    #2. Do the same thing for Bob
+    min_bob=inf
+    for i in game_obj._grid:
+        calc=0
+        for j in i:
+            if j!=0:
+                calc+=j
+        min_bob=min(calc,min_bob)
+    #3. (Bob - Alice)/Column_Size
+    #column_size=game_obj._y
+    return (min_bob-min_alice)/game_obj._y
+
 def minimax(game_obj:game.Grid,x,y,alpha=-inf,beta=inf,depth=inf,alice=True):
     '''Implementing a minimax algorithm here with a condition that whenever this function is called, Alice is the current player (aka the MAX player) and Bob is always a MIN player.
     '''
     #first up we need a way to evaluate whether the game is over or not and who won
-    if depth==0:
-        return 0 #TODO: implement a proper heuristics calculation here
     if if_terminal(game_obj): #we're getting our win/lose condition evaluation here
         #print('This state is terminal lol',x,y)
         return terminal_calc(game_obj)
+    #not a terminal position
+    #depth check
+    if depth==0:
+        return cut_off_evaluation(game_obj) #returns a score of a current position
 
     #alice is always the maximizing player
     if alice:
@@ -131,8 +161,6 @@ def minimax(game_obj:game.Grid,x,y,alpha=-inf,beta=inf,depth=inf,alice=True):
                 break
         return minEval
 
-
-
 def alg_minimax(game_obj:game.Grid):
     '''minimax function wrapper for further integration into the code + iterative deepening work'''
     d=dict()
@@ -145,7 +173,7 @@ def alg_minimax(game_obj:game.Grid):
                 #cannot do anything here
                 continue
             future_game_obj.decrease(i+1,j+1)
-            d[(i+1,j+1)]=minimax(future_game_obj,i+1,j+1,alice=False)
+            d[(i+1,j+1)]=minimax(future_game_obj,i+1,j+1,depth=0,alice=False)
             #print(d)
     #pick the highest value coordinate
     max_val=-inf
