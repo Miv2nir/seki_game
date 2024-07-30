@@ -2,6 +2,8 @@ from seki_util import game
 from seki_util.names import Names
 import random,copy
 from math import inf
+import threading,multiprocessing,time
+
 
 def alg_random(game_obj:game.Grid):
     '''An implementation of random moves in order to get a grasp of the board reading and handling (subject to the global random seed)'''
@@ -77,8 +79,12 @@ def terminal_calc(game_obj:game.Grid):
     else: #must be a draw, the function here shouldn't be called if the state isn't a terminal one
         return 0
     
+
+
 def cut_off_evaluation(game_obj:game.Grid):
     '''This function should evaluate the current position of a field and return a score from -1 to 1 on how beneficial that position is'''
+    global heuristics_called
+    heuristics_called=True
     #idea: calculate a distance of both bob and alice towards their victories as of right now
     #equal distances = 0
     #advantageous positions should be on a scale 
@@ -114,7 +120,8 @@ def minimax(game_obj:game.Grid,x,y,alpha=-inf,beta=inf,depth=inf,alice=True):
         return terminal_calc(game_obj)
     #not a terminal position
     #depth check
-    if depth==0:
+    if depth<=0:
+        #print('outta depth')
         return cut_off_evaluation(game_obj) #returns a score of a current position
 
     #alice is always the maximizing player
@@ -161,7 +168,7 @@ def minimax(game_obj:game.Grid,x,y,alpha=-inf,beta=inf,depth=inf,alice=True):
                 break
         return minEval
 
-def alg_minimax(game_obj:game.Grid):
+def alg_minimax(game_obj:game.Grid,depth=inf):
     '''minimax function wrapper for further integration into the code + iterative deepening work'''
     d=dict()
     #iterate through the entire game field, calculate minimax values for each position, return the highest one possible
@@ -173,7 +180,7 @@ def alg_minimax(game_obj:game.Grid):
                 #cannot do anything here
                 continue
             future_game_obj.decrease(i+1,j+1)
-            d[(i+1,j+1)]=minimax(future_game_obj,i+1,j+1,depth=0,alice=False)
+            d[(i+1,j+1)]=minimax(future_game_obj,i+1,j+1,depth=depth,alice=False)
             #print(d)
     #pick the highest value coordinate
     max_val=-inf
@@ -185,6 +192,52 @@ def alg_minimax(game_obj:game.Grid):
             final_x,final_y=i
     #depth not supported yet
     return (final_x,final_y) 
+
+def alg_minimax_process(game_obj:game.Grid,best_coords:list):
+    '''An iterative deepening thread that should be able to terminate whenever needed'''
+    depth=0
+    while True:
+        copied_game_obj=copy.deepcopy(game_obj)
+        global heuristics_called
+        heuristics_called=False
+        best_x,best_y=alg_minimax(copied_game_obj,depth)
+        best_coords[0]=best_x #for mutability purposes
+        best_coords[1]=best_y
+        #print(depth,best_x,best_y)
+        depth+=1
+        if not heuristics_called:
+            return None
+
+
+def alg_minimax_timed(game_obj:game.Grid):
+    '''Wrapper of a wrapper of a minimax algorithm for the purposes of iterative deepening'''
+    #Run alg_minimax in a loop with a timer
+    seconds=10
+
+    t_end=time.time()+seconds
+    depth=0
+    best_x=0
+    best_y=0
+    #first call out of a thread
+    global heuristics_called
+    heuristics_called=False
+    print(depth)
+    best_x,best_y=alg_minimax(game_obj,depth)
+    depth+=1
+    #time the next step
+    manager=multiprocessing.Manager()
+    best_coords=manager.list([best_x,best_y])
+    #Iterate with the depth 0 1 2 3 etc
+    t=multiprocessing.Process(target=alg_minimax_process,args=(game_obj,best_coords))
+    t.start()
+    #After a timer is over, return the last result of an algorithm
+    t.join(seconds)
+    if t.is_alive():
+        t.terminate()
     
+    best_x=best_coords[0]
+    best_y=best_coords[1]
+    #print('final:',best_x,best_y)
+    return best_x,best_y
 
 

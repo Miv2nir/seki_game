@@ -25,6 +25,7 @@ def runtime(bob,alice,presets):
     option1=option_picker_int({1,2})
     
     g=game.Grid()
+    g.draw_allowed=True
     if option1==1: #picking a preset map
         print('Type the name of a desired preset.')
         print('Available presets are:')
