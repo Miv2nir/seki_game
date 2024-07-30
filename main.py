@@ -17,7 +17,7 @@ def option_picker_int(options:set):
         print('Incorrect option number specified.')
 
 
-def runtime(bob,alice,presets):
+def runtime(bob,alice,presets,draw_allowed,decision_max_seconds):
     '''runtime for the CLI play'''
     print('Select an option:')
     print('1. Load a field preset')
@@ -25,7 +25,10 @@ def runtime(bob,alice,presets):
     option1=option_picker_int({1,2})
     
     g=game.Grid()
-    g.draw_allowed=True
+    g.draw_allowed=draw_allowed
+    global decision_max_time
+    decision_max_time=decision_max_seconds
+    
     if option1==1: #picking a preset map
         print('Type the name of a desired preset.')
         print('Available presets are:')
@@ -63,14 +66,17 @@ def runtime(bob,alice,presets):
         #continuing on
         bob.move(g,bob_x,bob_y,verbal=True)
         g.print_grid()
-        game_over=alice.analyze(g,move=True,verbal=True)
+        game_over=alice.analyze(g,decision_max_seconds,move=True,verbal=True)
         
 
 
 #main function starts here
 def main():
-
+    #some settings
+    draw_allowed=True
+    decision_max_seconds=10
     random.seed(10)
+
     #predefined presets for convenience
     presets={
         'cascade':[[1,2,3],[4,5,6],[7,8,9],[10,11,12]],
@@ -84,7 +90,7 @@ def main():
     alice=players.Player(players.Names.ALICE)
 
     #runtime for the CLI play
-    runtime(bob,alice,presets)
+    runtime(bob,alice,presets,draw_allowed,decision_max_seconds)
     
     #archive.copy_test(bob,alice)
 

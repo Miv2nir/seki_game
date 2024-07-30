@@ -209,10 +209,10 @@ def alg_minimax_process(game_obj:game.Grid,best_coords:list):
             return None
 
 
-def alg_minimax_timed(game_obj:game.Grid):
+def alg_minimax_timed(game_obj:game.Grid,decision_max_seconds):
     '''Wrapper of a wrapper of a minimax algorithm for the purposes of iterative deepening'''
     #Run alg_minimax in a loop with a timer
-    seconds=10
+    seconds=decision_max_seconds
 
     t_end=time.time()+seconds
     depth=0
@@ -221,7 +221,7 @@ def alg_minimax_timed(game_obj:game.Grid):
     #first call out of a thread
     global heuristics_called
     heuristics_called=False
-    print(depth)
+    #print(depth)
     best_x,best_y=alg_minimax(game_obj,depth)
     depth+=1
     #time the next step

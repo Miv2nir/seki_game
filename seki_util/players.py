@@ -12,12 +12,12 @@ class Player:
         thought=game_obj.evaluate(verbal)
         return thought
     
-    def analyze(self,game_obj:game.Grid,move=True,verbal=False):
+    def analyze(self,game_obj:game.Grid,decision_max_seconds,move=True,verbal=False):
         '''
         Suggests the next most beneficial move to the player.
         According to the design this function should only be called when the player is Alice AKA a bot.
         '''
-        guess_x,guess_y = alg.alg_minimax_timed(game_obj)
+        guess_x,guess_y = alg.alg_minimax_timed(game_obj,decision_max_seconds)
         if move:
             thought=self.move(game_obj,guess_x,guess_y,verbal)
         else:
