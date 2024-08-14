@@ -7,6 +7,9 @@ class Player:
     
 
     def move(self,game_obj:game.Grid,x,y,verbal=False,passing=False):
+        if x==0 and y==0:
+            passing=True
+        
         if not passing:
             print(self.name.name,'decreases (%s,%s)'%(x,y))
         else:
