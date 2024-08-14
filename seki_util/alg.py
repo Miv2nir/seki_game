@@ -172,8 +172,9 @@ def alg_minimax(game_obj:game.Grid,depth=inf):
     '''minimax function wrapper for further integration into the code + iterative deepening work'''
     d=dict()
     #pass check
-    future_game_obj=copy.deepcopy(game_obj)
-    d[(0,0)]=minimax(future_game_obj,0,0,depth=depth,alice=False)
+    if game_obj.pass_allowed:
+        future_game_obj=copy.deepcopy(game_obj)
+        d[(0,0)]=minimax(future_game_obj,0,0,depth=depth,alice=False)
     #iterate through the entire game field, calculate minimax values for each position, return the highest one possible
     for i in range(game_obj._x):
         for j in range(game_obj._y):

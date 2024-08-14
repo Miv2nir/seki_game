@@ -17,7 +17,7 @@ def option_picker_int(options:set):
         print('Incorrect option number specified.')
 
 
-def runtime(bob,alice,presets,draw_allowed,decision_max_seconds):
+def runtime(bob,alice,presets,draw_allowed,pass_allowed,decision_max_seconds):
     '''runtime for the CLI play'''
     print('Select an option:')
     print('1. Load a field preset')
@@ -26,6 +26,7 @@ def runtime(bob,alice,presets,draw_allowed,decision_max_seconds):
     
     g=game.Grid()
     g.draw_allowed=draw_allowed
+    g.pass_allowed=pass_allowed
     global decision_max_time
     decision_max_time=decision_max_seconds
     
@@ -53,15 +54,18 @@ def runtime(bob,alice,presets,draw_allowed,decision_max_seconds):
     game_over=False
     while not game_over:
         #bob starts first
-        bob_x,bob_y=map(int,input('Select a space to reduce a number in (0,0 indicates a pass): ').split())
+        if pass_allowed:
+            bob_x,bob_y=map(int,input('Select a space to reduce a number in (0,0 indicates a pass): ').split())
+        else:
+            bob_x,bob_y=map(int,input('Select a space to reduce a number in: ').split())
         #check for out of bounds selection
-        if (bob_x==0 and bob_y==0):
+        if bob_x==0 and bob_y==0 and pass_allowed:
             #player is passing on doing any moves in this particular case, skup checks
             #bob.move(g,bob_x,bob_y,verbal=True,passing=True)
             pass
         else:
-            if (bob_x>g._x) or (bob_y>g._y) or (0>bob_x) or (0>bob_y):
-                print(g._x,g._y)
+            if (bob_x>g._x) or (bob_y>g._y) or (0>=bob_x) or (0>=bob_y):
+                #print(g._x,g._y)
                 print('Selection is Out of Bounds!')
                 continue
             #check for selecting a zero
@@ -82,6 +86,7 @@ def runtime(bob,alice,presets,draw_allowed,decision_max_seconds):
 def main():
     #some settings
     draw_allowed=True
+    pass_allowed=True
     decision_max_seconds=10
     random.seed(10)
 
@@ -98,7 +103,7 @@ def main():
     alice=players.Player(players.Names.ALICE)
 
     #runtime for the CLI play
-    runtime(bob,alice,presets,draw_allowed,decision_max_seconds)
+    runtime(bob,alice,presets,draw_allowed,pass_allowed,decision_max_seconds)
     
     #archive.copy_test(bob,alice)
 

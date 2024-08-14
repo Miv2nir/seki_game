@@ -1,11 +1,12 @@
 import random
 from seki_util.names import Names
 class Grid:
-    def __init__(self,x=1,y=1,draw_allowed=False):
+    def __init__(self,x=1,y=1,draw_allowed=False,pass_allowed=False):
         self._x=x
         self._y=y
         self._grid = [[0 for col in range(x)] for row in range(y)]
         self.draw_allowed=draw_allowed #d-seki mode
+        self.pass_allowed=pass_allowed #passes
     
     def set_grid(self,m):
         '''
