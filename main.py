@@ -53,19 +53,26 @@ def runtime(bob,alice,presets,draw_allowed,decision_max_seconds):
     game_over=False
     while not game_over:
         #bob starts first
-        bob_x,bob_y=map(int,input('Select a space to reduce a number in: ').split())
+        bob_x,bob_y=map(int,input('Select a space to reduce a number in (0,0 indicates a pass): ').split())
         #check for out of bounds selection
-        if (bob_x>g._x) or (bob_y>g._y) or (0>bob_x) or (0>bob_y):
-            print(g._x,g._y)
-            print('Selection is Out of Bounds!')
-            continue
-        #check for selecting a zero
-        if g.get_value(bob_x,bob_y)==0:
-            print('Cannot select a Zero!')
-            continue
-        #continuing on
-        bob.move(g,bob_x,bob_y,verbal=True)
+        if (bob_x==0 and bob_y==0):
+            #player is passing on doing any moves in this particular case
+            bob.move(g,bob_x,bob_y,verbal=True,passing=True)
+        else:
+            if (bob_x>g._x) or (bob_y>g._y) or (0>bob_x) or (0>bob_y):
+                print(g._x,g._y)
+                print('Selection is Out of Bounds!')
+                continue
+            #check for selecting a zero
+            if g.get_value(bob_x,bob_y)==0:
+                print('Cannot select a Zero!')
+                continue
+            #continuing on
+            bob.move(g,bob_x,bob_y,verbal=True)
         g.print_grid()
+        bob_win=g.evaluate(verbal=False)
+        if bob_win==Names.BOB.name:
+            exit(0) #the game is over
         game_over=alice.analyze(g,decision_max_seconds,move=True,verbal=True)
         
 

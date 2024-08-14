@@ -6,9 +6,13 @@ class Player:
         self.name=name
     
 
-    def move(self,game_obj:game.Grid,x,y,verbal=False):
-        print(self.name.name,'decreases (%s,%s)'%(x,y))
-        game_obj.decrease(x,y)
+    def move(self,game_obj:game.Grid,x,y,verbal=False,passing=False):
+        if not passing:
+            print(self.name.name,'decreases (%s,%s)'%(x,y))
+        else:
+            print(self.name.name,'is passing on the move.')
+        if not passing:
+            game_obj.decrease(x,y)
         thought=game_obj.evaluate(verbal)
         return thought
     
